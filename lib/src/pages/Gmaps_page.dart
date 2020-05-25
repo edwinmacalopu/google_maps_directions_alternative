@@ -1,0 +1,95 @@
+import 'package:flutter/material.dart';
+import 'package:google_maps_alternative_directions/src/bloc/bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart'; 
+
+class GmapsPage extends StatefulWidget {
+  GmapsPage({Key key}) : super(key: key);
+
+  @override
+  _GmapsPageState createState() => _GmapsPageState();
+}
+
+class _GmapsPageState extends State<GmapsPage> {
+    
+  @override
+  Widget build(BuildContext context) {
+    final provmaps=Provider.of<ProviderMaps>(context);
+   return Scaffold(
+     appBar: AppBar(
+       backgroundColor: Colors.blueAccent,
+       title:Text("Google Maps - Route OSRM",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),),
+     ),
+           body: Stack(
+       alignment: Alignment.center,
+         children: <Widget>[
+       Positioned(
+       top: 0,
+          child: Container(
+         height: MediaQuery.of(context).size.height,
+         width: MediaQuery.of(context).size.width,
+            child: GoogleMap(
+           zoomControlsEnabled: false,
+           mapType: MapType.normal,
+           markers:provmaps.markers,
+           polylines: provmaps.polyline,
+           initialCameraPosition: CameraPosition(
+           target: provmaps.initialPos, zoom: 18.0),
+           onMapCreated:provmaps.onCreated,
+           onTap: provmaps.addMarker,
+         ),
+         
+       ),
+     ),
+     /*,*/
+     
+     Positioned(
+       bottom: 0,
+       child:Container(
+        //color: Colors.white,
+         height: 120,
+         width: MediaQuery.of(context).size.width,
+         decoration: BoxDecoration(
+           color: Colors.white,
+           borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight:Radius.circular(20) )
+         ),
+         child: Row(
+           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+           children: <Widget>[
+             Container(
+               height: 100,
+               width: 200,
+               child:ListView.builder(
+                 scrollDirection: Axis.vertical,
+                  itemCount: provmaps.markers.length,
+                  itemBuilder: (context,index){                                     
+                    return InputChip(
+                      label:Text(provmaps.markers.elementAt(index).position.latitude.toString().substring(0,10)+","+
+                      provmaps.markers.elementAt(index).position.longitude.toString().substring(0,10),style:TextStyle(color: Colors.white)),
+                      backgroundColor: index==0?Colors.green:Colors.blue,
+                      onDeleted: (){
+                        provmaps.polyline.clear();
+                        provmaps.markers.remove(provmaps.markers.elementAt(index)
+                        );
+                       setState((){});
+                       }
+                      );
+                  },
+                ),
+             ),
+             FloatingActionButton(
+               elevation: 1,
+               backgroundColor: Colors.blueAccent,
+               onPressed: provmaps.routermap,
+             child: Icon(Icons.directions),
+             )
+           ],
+         )          
+       )
+       ),
+         ],
+     ),
+   );   
+  } 
+ 
+}
