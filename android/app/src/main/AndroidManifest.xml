@@ -10,7 +10,7 @@
         android:label="google_maps_alternative_directions"
         android:icon="@mipmap/ic_launcher">
          <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="API_KEY"/>
+               android:value="APIKEY"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

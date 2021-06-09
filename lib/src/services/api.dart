@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class ApiOSRM{
   Future<List<LatLng>> getpoints(String longini,String latini,String longend,String latend)async{
      List<LatLng> llena=[];
-    var url="http://router.project-osrm.org/route/v1/driving/$longini,$latini;$longend,$latend?geometries=geojson";
+    var url="https://router.project-osrm.org/route/v1/driving/$longini,$latini;$longend,$latend?geometries=geojson";
     var response= await http.get(url);
     if(response.statusCode==200){
       var rutar=jsonDecode(response.body)["routes"][0]["geometry"]["coordinates"];
