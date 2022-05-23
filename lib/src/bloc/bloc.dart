@@ -5,8 +5,8 @@ import 'dart:math' show cos, sqrt, asin;
 
 class ProviderMaps with ChangeNotifier {
   LatLng _initialposition = LatLng(-12.122711, -77.027475);
-  LatLng _finalposition;
-  GoogleMapController _mapController;
+  late LatLng _finalposition;
+  late GoogleMapController _mapController;
   LatLng get initialPos => _initialposition;
   LatLng get finalPos => _finalposition;
   final Set<Marker> _markers = Set();
@@ -56,12 +56,12 @@ class ProviderMaps with ChangeNotifier {
         _finalposition = markers.elementAt(i).position;
       }
     }
-    List<LatLng> polylines = await ApiOSRM().getpoints(
+    List<LatLng>? polylines = await ApiOSRM().getpoints(
         _initialposition.longitude.toString(),
         _initialposition.latitude.toString(),
         _finalposition.longitude.toString(),
         _finalposition.latitude.toString());
-    createpolyline(polylines);
+    createpolyline(polylines!);
     distance = calculatedistance(
         _initialposition.latitude,
         _initialposition.longitude,
@@ -77,5 +77,11 @@ class ProviderMaps with ChangeNotifier {
         points: polylines,
         color: Colors.redAccent));
     notifyListeners();
+  }
+
+  void cleanpoint(int index) {
+    polyline.clear();
+    distance = '';
+    markers.remove(markers.elementAt(index));
   }
 }

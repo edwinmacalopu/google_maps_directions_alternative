@@ -4,7 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class GmapsPage extends StatefulWidget {
-  GmapsPage({Key key}) : super(key: key);
+  GmapsPage({Key? key}) : super(key: key);
 
   @override
   _GmapsPageState createState() => _GmapsPageState();
@@ -43,8 +43,6 @@ class _GmapsPageState extends State<GmapsPage> {
               ),
             ),
           ),
-          /*,*/
-
           Positioned(
               bottom: 0,
               child: Container(
@@ -58,10 +56,9 @@ class _GmapsPageState extends State<GmapsPage> {
                           topRight: Radius.circular(20))),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    
                     children: <Widget>[
                       Container(
-                         height: 220,
+                          height: 220,
                           width: 200,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,31 +75,29 @@ class _GmapsPageState extends State<GmapsPage> {
                                                     .position
                                                     .latitude
                                                     .toString()
-                                                    .substring(0, 10) +
+                                                    .substring(0, 7) +
                                                 "," +
                                                 provmaps.markers
                                                     .elementAt(index)
                                                     .position
                                                     .longitude
                                                     .toString()
-                                                    .substring(0, 10),
+                                                    .substring(0, 7),
                                             style:
                                                 TextStyle(color: Colors.white)),
                                         backgroundColor: index == 0
                                             ? Colors.green
                                             : Colors.blue,
                                         onDeleted: () {
-                                          provmaps.polyline.clear();
-                                          provmaps.distance = '';
-                                          provmaps.markers.remove(provmaps
-                                              .markers
-                                              .elementAt(index));
+                                          provmaps.cleanpoint(index);
                                           setState(() {});
                                         });
                                   },
                                 ),
                               ),
-                              Text("Distance: ${provmaps.distance}",style: TextStyle(fontWeight: FontWeight.bold)),
+                              Text("Distance: ${provmaps.distance}",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
                             ],
                           )),
                       FloatingActionButton(
